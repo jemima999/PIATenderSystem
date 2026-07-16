@@ -122,8 +122,7 @@ namespace PIATenderSystem.Controllers
 
                 if (bidDocuments != null && bidDocuments.Count > 0)
                 {
-                    // Har application ke liye alag folder — tender ID aur application ID dono se path banta hai,
-                    // taake do bidders ki same-naam wali files (e.g. "furniture.pdf") kabhi clash na karein.
+                    
                     var appFolder = Path.Combine(_env.WebRootPath, "applications", $"tender_{id}", $"app_{application.Id}");
                     if (!Directory.Exists(appFolder))
                         Directory.CreateDirectory(appFolder);
