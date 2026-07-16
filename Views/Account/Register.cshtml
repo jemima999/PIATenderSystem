@@ -1,0 +1,90 @@
+@{
+    ViewData["Title"] = "Register";
+}
+<style>
+    .hero{display:flex;min-height:calc(100vh - 74px);}
+    .hero-left{flex:1.1;background:linear-gradient(160deg,#00543C,#007A4D);color:#fff;display:flex;flex-direction:column;justify-content:center;padding:60px;position:relative;overflow:hidden;}
+    .hero-left::after{content:"✈";position:absolute;font-size:280px;right:-60px;bottom:-70px;color:rgba(255,255,255,0.06);transform:rotate(25deg);}
+    .hero-left h1{font-family:'Poppins',sans-serif;font-size:34px;margin:0 0 14px;}
+    .hero-left p{font-size:15px;color:rgba(255,255,255,0.8);max-width:380px;line-height:1.6;}
+    .hero-right{flex:1;display:flex;align-items:center;justify-content:center;padding:40px;}
+    .pass{display:flex;background:#fff;border-radius:16px;box-shadow:0 20px 45px rgba(0,0,0,0.12);overflow:hidden;max-width:460px;width:100%;position:relative;}
+    .pass-main{flex:1;padding:36px 34px;}
+    .pass-stub{width:56px;background:#00543C;display:flex;align-items:center;justify-content:center;}
+    .pass-stub span{writing-mode:vertical-rl;transform:rotate(180deg);color:#E4C766;font-family:'Poppins',sans-serif;font-size:11px;letter-spacing:3px;}
+    .pass-main::after{content:"";position:absolute;right:56px;top:0;bottom:0;border-left:2px dashed #e2ded4;}
+    .notch{position:absolute;right:47px;width:18px;height:18px;background:#F6F4EF;border-radius:50%;}
+    .notch.top{top:-9px;}
+    .notch.bottom{bottom:-9px;}
+    .pass-title{font-family:'Poppins',sans-serif;font-weight:600;font-size:20px;margin-bottom:4px;color:#00543C;}
+    .pass-sub{font-size:12px;color:#8a8578;margin-bottom:22px;letter-spacing:0.5px;}
+    .field{margin-bottom:16px;}
+    .field label{display:block;font-size:12px;font-weight:600;color:#1C2621;margin-bottom:6px;letter-spacing:0.4px;}
+    .field input, .field select{width:100%;padding:11px 14px;border:1.5px solid #e3ddd0;border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;background:#fff;}
+    .field input:focus, .field select:focus{outline:none;border-color:#007A4D;}
+    .hint{font-size:11px;color:#9a9484;margin-top:5px;display:block;}
+    .btn-pia{width:100%;padding:12px;background:#007A4D;color:#fff;border:none;border-radius:8px;font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;cursor:pointer;}
+    .btn-pia:hover{background:#00543C;}
+    .switch-link{text-align:center;font-size:13px;margin-top:18px;color:#6b6558;}
+    .switch-link a{color:#007A4D;font-weight:600;text-decoration:none;}
+    .alert-pia{background:#fdecea;border:1px solid #f3c1bb;color:#a33;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;}
+</style>
+
+<div class="hero">
+    <div class="hero-left">
+        <h1>Join the Network</h1>
+        <p>Register your company to submit tenders, upload documents, and track your bids — all in one place.</p>
+    </div>
+    <div class="hero-right">
+        <div class="pass">
+            <div class="pass-main">
+                <div class="notch top"></div>
+                <div class="notch bottom"></div>
+                <div class="pass-title">Customer Registration</div>
+                <div class="pass-sub">CREATE YOUR ACCOUNT</div>
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert-pia">
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <p style="margin:0;">@error.ErrorMessage</p>
+                        }
+                    </div>
+                }
+
+                <form asp-controller="Account" asp-action="Register" method="post">
+                    <div class="field">
+                        <label>Full Name</label>
+                        <input type="text" name="fullName" required />
+                    </div>
+                    <div class="field">
+                        <label>Company</label>
+                        <select name="companyName" required>
+                            <option value="">-- Select Your Company --</option>
+                            @foreach (var company in PIATenderSystem.Models.AllowedCompanies.Companies)
+                            {
+                                <option value="@company.Key">@company.Key</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Company Email</label>
+                        <input type="email" name="email" placeholder="yourname@companydomain.com" required />
+                        <span class="hint">Email must match your company's official domain.</span>
+                    </div>
+                    <div class="field">
+                        <label>Password</label>
+                        <input type="password" name="password" required />
+                    </div>
+                    <button type="submit" class="btn-pia">Register</button>
+                </form>
+
+                <div class="switch-link">
+                    Already have an account? <a asp-controller="Account" asp-action="Login">Login here</a>
+                </div>
+            </div>
+            <div class="pass-stub"><span>CUSTOMER PASS</span></div>
+        </div>
+    </div>
+</div>

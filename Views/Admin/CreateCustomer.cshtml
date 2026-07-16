@@ -1,0 +1,53 @@
+@{
+    ViewData["Title"] = "Create Customer";
+}
+<style>
+    .form-wrap{padding:32px 40px;max-width:500px;margin:0 auto;}
+    .form-wrap h1{font-family:'Poppins',sans-serif;font-weight:700;font-size:22px;color:#00543C;margin-bottom:22px;}
+    .form-card{background:#fff;border:1px solid #eee;border-radius:10px;padding:26px;}
+    .form-card label{display:block;font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;color:#1C2621;margin-bottom:6px;}
+    .form-card input{
+        width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:6px;
+        margin-bottom:16px;font-size:13.5px;font-family:'Inter',sans-serif;
+    }
+    .form-card input:focus{outline:none;border-color:#007A4D;}
+    .btn-submit{
+        background:#00543C;color:#fff;border:none;padding:11px 26px;
+        border-radius:6px;font-family:'Poppins',sans-serif;font-weight:600;
+        font-size:13.5px;cursor:pointer;
+    }
+    .btn-submit:hover{background:#003d2b;}
+    .msg-success{background:#EAF3DE;color:#27500A;padding:12px 16px;border-radius:6px;margin-bottom:16px;font-size:13.5px;}
+    .msg-error{background:#FCEBEB;color:#791F1F;padding:12px 16px;border-radius:6px;margin-bottom:16px;font-size:13.5px;}
+</style>
+
+<div class="form-wrap">
+    <h1>Create Customer Account</h1>
+
+    @if (ViewBag.Success != null)
+    {
+        <div class="msg-success">@ViewBag.Success</div>
+    }
+    @if (ViewBag.Error != null)
+    {
+        <div class="msg-error">@ViewBag.Error</div>
+    }
+
+    <div class="form-card">
+        <form method="post" asp-controller="Admin" asp-action="CreateCustomer">
+            <label>Full Name</label>
+            <input type="text" name="fullName" required />
+
+            <label>Company Name</label>
+            <input type="text" name="companyName" />
+
+            <label>Email</label>
+            <input type="email" name="email" required />
+
+            <label>Password</label>
+            <input type="password" name="password" required />
+
+            <button type="submit" class="btn-submit">Create Account</button>
+        </form>
+    </div>
+</div>

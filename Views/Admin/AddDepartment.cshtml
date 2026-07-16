@@ -1,0 +1,72 @@
+@{
+    ViewData["Title"] = "Add Department";
+}
+<style>
+    .form-wrap{padding:32px 40px;max-width:600px;margin:0 auto;}
+    .form-wrap h1{font-family:'Poppins',sans-serif;font-weight:700;font-size:22px;color:#00543C;margin-bottom:22px;}
+    .form-card{background:#fff;border:1px solid #eee;border-radius:10px;padding:26px;margin-bottom:24px;}
+    .form-card label{display:block;font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;color:#1C2621;margin-bottom:6px;}
+    .form-card input{
+        width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:6px;
+        margin-bottom:16px;font-size:13.5px;font-family:'Inter',sans-serif;
+    }
+    .form-card input:focus{outline:none;border-color:#007A4D;}
+    .btn-submit{
+        background:#00543C;color:#fff;border:none;padding:11px 26px;
+        border-radius:6px;font-family:'Poppins',sans-serif;font-weight:600;
+        font-size:13.5px;cursor:pointer;
+    }
+    .btn-submit:hover{background:#003d2b;}
+    .msg-success{background:#EAF3DE;color:#27500A;padding:12px 16px;border-radius:6px;margin-bottom:16px;font-size:13.5px;}
+    .msg-error{background:#FCEBEB;color:#791F1F;padding:12px 16px;border-radius:6px;margin-bottom:16px;font-size:13.5px;}
+
+    table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;border:1px solid #eee;}
+    thead tr{background:#C9A227;}
+    th{text-align:left;padding:12px 16px;font-size:13px;color:#fff;font-weight:700;}
+    td{padding:12px 16px;font-size:13.5px;border-top:1px solid #f0eee8;color:#333;}
+    .btn-del{background:#791F1F;color:#fff;border:none;padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer;}
+    .btn-del:hover{background:#5c1616;}
+</style>
+
+<div class="form-wrap">
+    <h1>Departments</h1>
+
+    @if (ViewBag.Success != null)
+    {
+        <div class="msg-success">@ViewBag.Success</div>
+    }
+    @if (ViewBag.Error != null)
+    {
+        <div class="msg-error">@ViewBag.Error</div>
+    }
+
+    <div class="form-card">
+        <form method="post" asp-controller="Admin" asp-action="AddDepartment">
+            <label>New Department Name</label>
+            <input type="text" name="name" placeholder="e.g. Supply Chain Management" required />
+            <button type="submit" class="btn-submit">Add Department</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Department Name</th>
+                <th style="width:100px;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in (List<PIATenderSystem.Models.Department>)ViewBag.Departments)
+            {
+                <tr>
+                    <td>@d.Name</td>
+                    <td>
+                        <form method="post" asp-controller="Admin" asp-action="DeleteDepartment" asp-route-id="@d.Id">
+                            <button type="submit" class="btn-del" onclick="return confirm('Delete this department?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - PIA Tender System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --pia-green-dark:#00543C;
+            --pia-green:#007A4D;
+            --pia-gold:#C9A227;
+            --cream:#F6F4EF;
+            --charcoal:#1C2621;
+        }
+        *{box-sizing:border-box;}
+        body{margin:0;font-family:'Inter',sans-serif;background:var(--cream);color:var(--charcoal);min-height:100vh;}
+
+        .pia-nav{
+            background:#fff;
+            padding:16px 44px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            box-shadow:0 4px 14px rgba(0,0,0,0.06);
+            position:relative;
+            z-index:10;
+        }
+        .pia-nav .left{display:flex;align-items:center;}
+        .pia-nav .left img{
+            height:56px;
+            width:auto;
+            display:block;
+        }
+        .pia-nav .links{display:flex;align-items:center;gap:36px;}
+        .pia-nav .links a{
+            color:var(--pia-green-dark);
+            text-decoration:none;
+            font-family:'Poppins',sans-serif;
+            font-weight:600;
+            font-size:15px;
+        }
+        .pia-nav .links a:not(.btn-nav-login):not(.btn-nav-logout){
+            position:relative;
+            padding-bottom:10px;
+        }
+        .pia-nav .links a:not(.btn-nav-login):not(.btn-nav-logout)::after{
+            content:"";
+            position:absolute;
+            left:0;
+            right:0;
+            bottom:0;
+            height:3px;
+            background:var(--pia-gold);
+            transform:scaleX(0);
+            transform-origin:center;
+            transition:transform .2s ease;
+        }
+        .pia-nav .links a:not(.btn-nav-login):not(.btn-nav-logout):hover{color:var(--pia-gold);}
+        .pia-nav .links a:not(.btn-nav-login):not(.btn-nav-logout):hover::after{transform:scaleX(1);}
+        .btn-nav-login{background:var(--pia-green);color:#fff !important;padding:10px 26px;border-radius:24px;font-size:14px;}
+        .btn-nav-login:hover{background:var(--pia-green-dark) !important;}
+        .btn-nav-logout{background:transparent;color:var(--pia-green-dark) !important;border:1.5px solid var(--pia-green-dark);padding:8px 22px;border-radius:24px;font-size:14px;}
+        .btn-nav-logout:hover{background:var(--pia-green-dark);color:#fff !important;}
+        @@media(max-width:768px){.pia-nav{padding:12px 18px;flex-wrap:wrap;gap:12px;}.pia-nav .left img{height:44px;}.pia-nav .links{gap:16px;flex-wrap:wrap;}}
+    </style>
+</head>
+<body>
+
+    <div class="pia-nav">
+        <div class="left">
+            <a asp-controller="Home" asp-action="Index">
+                <img src="@Url.Content("~/images/pia-logo.png")" alt="PIA Tender System">
+            </a>
+        </div>
+        <div class="links">
+            <a asp-controller="Home" asp-action="Index">Home</a>
+            <a asp-controller="Tender" asp-action="Index">Tender</a>
+
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Admin"))
+                {
+                    <a asp-controller="Admin" asp-action="Dashboard">Admin Dashboard</a>
+                }
+                <a asp-controller="Home" asp-action="Index">About Us</a>
+                <a class="btn-nav-logout" asp-controller="Account" asp-action="Logout">Logout</a>
+            }
+            else
+            {
+                <a asp-controller="Home" asp-action="Index">About Us</a>
+                <a class="btn-nav-login" asp-controller="Account" asp-action="Login">Login</a>
+            }
+        </div>
+    </div>
+
+    <main>
+        @RenderBody()
+    </main>
+
+</body>
+</html>

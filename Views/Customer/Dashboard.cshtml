@@ -1,0 +1,130 @@
+@model List<PIATenderSystem.Models.Tender>
+@{
+    ViewData["Title"] = "Tenders";
+}
+<style>
+    .wrap{padding:32px 40px;max-width:1300px;margin:0 auto;}
+    .wrap h1{font-family:'Poppins',sans-serif;font-size:26px;font-weight:700;color:#00543C;margin-bottom:20px;}
+
+    .filters{
+        background:#fff;border-radius:10px;padding:16px 18px;
+        border:1px solid #eee;
+        display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;align-items:center;
+    }
+    .filters input, .filters select{
+        padding:10px 14px;border:1px solid #ddd;border-radius:6px;
+        font-size:13px;font-family:'Inter',sans-serif;min-width:160px;
+        background:#fff;color:#444;
+    }
+    .filters input::placeholder{color:#999;}
+    .filters input:focus, .filters select:focus{outline:none;border-color:#007A4D;}
+    .btn-search{
+        background:#00543C;color:#fff;border:none;
+        padding:10px 26px;border-radius:6px;font-family:'Poppins',sans-serif;
+        font-weight:600;font-size:13px;cursor:pointer;
+    }
+    .btn-search:hover{background:#003d2b;}
+    .btn-clear{
+        background:transparent;color:#00543C;border:1px solid #ccc;
+        padding:10px 22px;border-radius:6px;font-family:'Poppins',sans-serif;
+        font-weight:600;font-size:13px;cursor:pointer;text-decoration:none;
+    }
+    .btn-clear:hover{background:#f5f5f5;}
+
+    table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;border:1px solid #eee;}
+    thead tr{background:#C9A227;}
+    th{text-align:left;padding:14px 16px;font-size:13px;color:#fff;font-weight:700;letter-spacing:0.2px;}
+    td{padding:14px 16px;font-size:13.5px;border-top:1px solid #f0eee8;color:#333;}
+    tbody tr:nth-child(even){background:#fafaf8;}
+    tbody tr:hover{background:#f5f3ec;}
+    .tender-title{color:#00543C;font-weight:500;}
+
+    .badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+    .badge-open{background:#EAF3DE;color:#27500A;}
+    .badge-closed{background:#FCEBEB;color:#791F1F;}
+
+    .view-btn{
+        display:inline-flex;align-items:center;gap:6px;
+        padding:7px 16px;border-radius:6px;background:#00543C;
+        color:#fff;text-decoration:none;font-size:12.5px;font-weight:600;
+        font-family:'Poppins',sans-serif;
+    }
+    .view-btn:hover{background:#007A4D;}
+    .no-pdf{color:#c8c3b6;font-size:12px;}
+    .empty{padding:50px;text-align:center;color:#8a8578;font-size:14px;background:#fff;border-radius:8px;border:1px solid #eee;}
+</style>
+
+<div class="wrap">
+    <h1>Tenders</h1>
+
+    <form class="filters" method="get" asp-controller="Customer" asp-action="Dashboard">
+        <input type="text" name="search" value="@ViewBag.Search" placeholder="Search" />
+        <input type="date" name="startDate" value="@ViewBag.StartDate" title="Start Date from" />
+        <input type="date" name="closingDate" value="@ViewBag.ClosingDate" title="Closing Date to" />
+
+        <select name="department">
+            <option value="All">Select Department</option>
+            @foreach (var dept in (List<string>)ViewBag.Departments)
+            {
+                if (dept == ViewBag.SelectedDepartment)
+                {
+                    <option value="@dept" selected>@dept</option>
+                }
+                else
+                {
+                    <option value="@dept">@dept</option>
+                }
+            }
+        </select>
+
+        <select name="status">
+            <option value="open" selected="@(ViewBag.Status == "open")">Open Tenders</option>
+            <option value="closed" selected="@(ViewBag.Status == "closed")">Closed Tenders</option>
+        </select>
+
+        <button type="submit" class="btn-search">Search</button>
+        <a href="@Url.Action("Dashboard","Customer")" class="btn-clear">Clear</a>
+    </form>
+
+    @if (Model.Count == 0)
+    {
+        <div class="empty">No Tender found with this filter.</div>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Tender ID</th>
+                    <th>Detail</th>
+                    <th>Start Date</th>
+                    <th>Closing Date</th>
+                    <th>Department</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model)
+                {
+                    <tr>
+                        <td>@t.TenderRefNo</td>
+                        <td class="tender-title">@t.Title</td>
+                        <td>@t.StartDate.ToString("yyyy-MM-dd")</td>
+                        <td>@t.ClosingDate.ToString("yyyy-MM-dd")</td>
+                        <td>@t.Department</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(t.PdfFileName))
+                            {
+                                <a class="view-btn" asp-controller="Customer" asp-action="DownloadPdf" asp-route-id="@t.Id" target="_blank">View</a>
+                            }
+                            else
+                            {
+                                <span class="no-pdf">Not available</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

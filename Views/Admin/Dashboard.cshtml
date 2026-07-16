@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+<style>
+    .admin-wrap{padding:32px 40px;max-width:1100px;margin:0 auto;}
+    .admin-wrap h1{font-family:'Poppins',sans-serif;font-weight:700;font-size:24px;color:#00543C;margin-bottom:24px;}
+    .cards{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:30px;}
+    .card{background:#fff;border:1px solid #eee;border-radius:10px;padding:20px 26px;flex:1;min-width:180px;}
+    .card .num{font-family:'Poppins',sans-serif;font-weight:700;font-size:28px;color:#00543C;}
+    .card .lbl{font-size:13px;color:#777;margin-top:4px;}
+    .actions{display:flex;gap:14px;flex-wrap:wrap;}
+    .actions a{
+        background:#00543C;color:#fff;text-decoration:none;
+        padding:12px 22px;border-radius:8px;font-family:'Poppins',sans-serif;
+        font-weight:600;font-size:14px;
+    }
+    .actions a:hover{background:#007A4D;}
+</style>
+
+<div class="admin-wrap">
+    <h1>Admin Dashboard</h1>
+
+    <div class="cards">
+        <div class="card"><div class="num">@ViewBag.TotalTenders</div><div class="lbl">Total Tenders</div></div>
+        <div class="card"><div class="num">@ViewBag.PublishedCount</div><div class="lbl">Published</div></div>
+        <div class="card"><div class="num">@ViewBag.DraftCount</div><div class="lbl">Draft</div></div>
+        <div class="card"><div class="num">@ViewBag.TotalCustomers</div><div class="lbl">Customers</div></div>
+    </div>
+
+    <div class="actions">
+        <a asp-controller="Admin" asp-action="CreateCustomer">+ Create Customer</a>
+        <a asp-controller="Admin" asp-action="UploadTender">+ Upload Tender</a>
+        <a asp-controller="Admin" asp-action="ManageTenders">Manage Tenders</a>
+        <a asp-controller="Admin" asp-action="AddDepartment">+ Add Department</a>
+    </div>
+</div>

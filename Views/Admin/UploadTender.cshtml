@@ -1,0 +1,71 @@
+@{
+    ViewData["Title"] = "Upload Tender";
+}
+<style>
+    .form-wrap{padding:32px 40px;max-width:600px;margin:0 auto;}
+    .form-wrap h1{font-family:'Poppins',sans-serif;font-weight:700;font-size:22px;color:#00543C;margin-bottom:22px;}
+    .form-card{background:#fff;border:1px solid #eee;border-radius:10px;padding:26px;}
+    .form-card label{display:block;font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;color:#1C2621;margin-bottom:6px;}
+    .form-card input, .form-card select{
+        width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:6px;
+        margin-bottom:16px;font-size:13.5px;font-family:'Inter',sans-serif;
+    }
+    .form-card input:focus, .form-card select:focus{outline:none;border-color:#007A4D;}
+    .row2{display:flex;gap:14px;}
+    .row2 > div{flex:1;}
+    .btn-submit{
+        background:#00543C;color:#fff;border:none;padding:11px 26px;
+        border-radius:6px;font-family:'Poppins',sans-serif;font-weight:600;
+        font-size:13.5px;cursor:pointer;
+    }
+    .btn-submit:hover{background:#003d2b;}
+    .msg-success{background:#EAF3DE;color:#27500A;padding:12px 16px;border-radius:6px;margin-bottom:16px;font-size:13.5px;}
+    .msg-error{background:#FCEBEB;color:#791F1F;padding:12px 16px;border-radius:6px;margin-bottom:16px;font-size:13.5px;}
+    .note{color:#888;font-size:12px;margin-top:-10px;margin-bottom:16px;}
+</style>
+
+<div class="form-wrap">
+    <h1>Upload Tender (Draft)</h1>
+
+    @if (ViewBag.Success != null)
+    {
+        <div class="msg-success">@ViewBag.Success</div>
+    }
+    @if (ViewBag.Error != null)
+    {
+        <div class="msg-error">@ViewBag.Error</div>
+    }
+
+    <div class="form-card">
+        <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="UploadTender">
+            <label>Tender Title / Detail</label>
+            <input type="text" name="title" required />
+
+           <label>Department</label>
+<select name="department" required>
+    <option value="">-- Select Department --</option>
+    @foreach (var d in (List<PIATenderSystem.Models.Department>)ViewBag.Departments)
+    {
+        <option value="@d.Name">@d.Name</option>
+    }
+</select>
+
+            <div class="row2">
+                <div>
+                    <label>Start Date</label>
+                    <input type="date" name="startDate" required />
+                </div>
+                <div>
+                    <label>Closing Date</label>
+                    <input type="date" name="closingDate" required />
+                </div>
+            </div>
+
+            <label>Tender PDF</label>
+            <input type="file" name="pdfFile" accept="application/pdf" />
+        
+
+            <button type="submit" class="btn-submit">Save as Draft</button>
+        </form>
+    </div>
+</div>

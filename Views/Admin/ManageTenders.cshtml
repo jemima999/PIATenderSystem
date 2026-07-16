@@ -1,0 +1,79 @@
+@model List<PIATenderSystem.Models.Tender>
+@{
+    ViewData["Title"] = "Manage Tenders";
+}
+<style>
+    .wrap{padding:32px 40px;max-width:1300px;margin:0 auto;}
+    .wrap h1{font-family:'Poppins',sans-serif;font-weight:700;font-size:24px;color:#00543C;margin-bottom:20px;}
+
+    table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;border:1px solid #eee;}
+    thead tr{background:#C9A227;}
+    th{text-align:left;padding:14px 16px;font-size:13px;color:#fff;font-weight:700;}
+    td{padding:14px 16px;font-size:13.5px;border-top:1px solid #f0eee8;color:#333;}
+    tbody tr:nth-child(even){background:#fafaf8;}
+
+    .badge{padding:4px 12px;border-radius:20px;font-size:11.5px;font-weight:600;}
+    .badge-draft{background:#FCEBEB;color:#791F1F;}
+    .badge-published{background:#EAF3DE;color:#27500A;}
+
+    .btn-publish, .btn-unpublish{
+        border:none;padding:7px 16px;border-radius:6px;font-size:12.5px;
+        font-weight:600;font-family:'Poppins',sans-serif;cursor:pointer;
+    }
+    .btn-publish{background:#00543C;color:#fff;}
+    .btn-publish:hover{background:#007A4D;}
+    .btn-unpublish{background:#C9A227;color:#fff;}
+    .btn-unpublish:hover{background:#a6841c;}
+</style>
+
+<div class="wrap">
+    <h1>Manage Tenders</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tender ID</th>
+                <th>Detail</th>
+                <th>Department</th>
+                <th>Closing Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Model)
+            {
+                <tr>
+                    <td>@t.TenderRefNo</td>
+                    <td>@t.Title</td>
+                    <td>@t.Department</td>
+                    <td>@t.ClosingDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        @if (t.IsPublished)
+                        {
+                            <span class="badge badge-published">Published</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-draft">Draft</span>
+                        }
+                    </td>
+                    <td>
+                        @if (t.IsPublished)
+                        {
+                            <form method="post" asp-controller="Admin" asp-action="Unpublish" asp-route-id="@t.Id">
+                                <button type="submit" class="btn-unpublish">Unpublish</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" asp-controller="Admin" asp-action="Publish" asp-route-id="@t.Id">
+                                <button type="submit" class="btn-publish">Publish</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
